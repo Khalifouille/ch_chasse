@@ -67,3 +67,25 @@ Citizen.CreateThread(function()
         end
     end)
 end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+        local playerPed = PlayerPedId()
+        local aiming, entity = GetEntityPlayerIsFreeAimingAt(PlayerId())
+        
+        if aiming and IsPedShooting(playerPed) then
+            if IsEntityAPed(entity) then
+                local model = GetEntityModel(entity)
+                print("Entity model:", model)
+                if model == GetHashKey("a_c_cow") or model == GetHashKey("a_c_deer") then
+                    print("Animal détecté !")
+                    if IsEntityDead(entity) then
+                        print("Animal tué !")
+                        TriggerServerEvent('esx_hunting:animalDied', NetworkGetNetworkIdFromEntity(entity))
+                    end
+                end
+            end
+        end
+    end
+end)
