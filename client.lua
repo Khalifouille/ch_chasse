@@ -83,11 +83,13 @@ Citizen.CreateThread(function()
             if IsEntityAPed(entity) then
                 local model = GetEntityModel(entity)
                 local animalName = animalModels[model]
+
                 if animalName then
                     if IsEntityDead(entity) then
                         local animalPosition = GetEntityCoords(entity)
                         print("Animal mort:", animalName, "Position:", animalPosition)
                         TriggerServerEvent('esx_hunting:animalDied', NetworkGetNetworkIdFromEntity(entity), animalName, animalPosition)
+                        local marker = DrawMarker(1, animalPosition.x, animalPosition.y, animalPosition.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 255, 0, 0, 100, false, true, 2, nil, nil, false)
                     end
                 else
                     print("Modèle d'animal inconnu:", model)
