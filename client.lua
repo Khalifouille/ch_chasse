@@ -75,8 +75,10 @@ Citizen.CreateThread(function()
         local aiming, entity = GetEntityPlayerIsFreeAimingAt(PlayerId())
         local animalModels = {
             [-50684386] = "Vache",
-            [-145111855] = "Cerf",
             [-541762431] = "Lapin",
+            [-664053099] = "Cerf",
+            [-1323586730] = "Halouf",
+            [-832573324] = "Sanglier",
         }
         
         if aiming and IsPedShooting(playerPed) then
