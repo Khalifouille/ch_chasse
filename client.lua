@@ -73,18 +73,27 @@ Citizen.CreateThread(function()
         Citizen.Wait(0)
         local playerPed = PlayerPedId()
         local aiming, entity = GetEntityPlayerIsFreeAimingAt(PlayerId())
+        local animalModels = {
+            [-50684386] = "Vache",
+            [-145111855] = "Cerf",
+            [-541762431] = "Lapin",
+        }
         
         if aiming and IsPedShooting(playerPed) then
             if IsEntityAPed(entity) then
                 local model = GetEntityModel(entity)
-                print("Entity model:", model)
-                if model == GetHashKey("a_c_cow") or model == GetHashKey("a_c_deer") then
-                    print("Animal détecté !")
+                local animalName = animalModels[model]
+                if animalName then
                     if IsEntityDead(entity) then
-                        print("Animal tué !")
-                        TriggerServerEvent('esx_hunting:animalDied', NetworkGetNetworkIdFromEntity(entity))
+                        local animalPosition = GetEntityCoords(entity)
+                        print("Animal mort:", animalName, "Position:", animalPosition)
+                        TriggerServerEvent('esx_hunting:animalDied', NetworkGetNetworkIdFromEntity(entity), animalName, animalPosition)
                     end
+                else
+                    print("Modèle d'animal inconnu:", model)
                 end
+            else
+                print("L'entité n'est pas un ped:", entity)
             end
         end
     end

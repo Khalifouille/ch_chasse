@@ -12,8 +12,6 @@ AddEventHandler("onPlayerSpawn", function(playerId)
 end)
 
 RegisterServerEvent('esx_hunting:animalDied')
-AddEventHandler('esx_hunting:animalDied', function(animalNetId)
-    print("Animal mort détecté, NetID:", animalNetId)
-    TriggerClientEvent('esx_hunting:animalKilled', -1, NetworkGetEntityFromNetworkId(animalNetId))
+AddEventHandler('esx_hunting:animalDied', function(animalNetId, animalName, animalPosition)
+    print("Animal mort détecté, NetID:", animalNetId, "Nom:", animalName, "Position:", animalPosition)
 end)
-
