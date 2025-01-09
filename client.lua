@@ -68,6 +68,8 @@ Citizen.CreateThread(function()
     end)
 end)
 
+local animalPositions = {}
+
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(0)
@@ -81,24 +83,62 @@ Citizen.CreateThread(function()
             [-832573324] = "Sanglier",
         }
         
-        if aiming and IsPedShooting(playerPed) then
-            if IsEntityAPed(entity) then
-                local model = GetEntityModel(entity)
-                local animalName = animalModels[model]
+        if aiming and IsEntityAPed(entity) then
+            local model = GetEntityModel(entity)
+            local animalName = animalModels[model]
 
-                if animalName then
-                    if IsEntityDead(entity) then
-                        local animalPosition = GetEntityCoords(entity)
-                        print("Animal mort:", animalName, "Position:", animalPosition)
-                        TriggerServerEvent('esx_hunting:animalDied', NetworkGetNetworkIdFromEntity(entity), animalName, animalPosition)
-                        local marker = DrawMarker(1, animalPosition.x, animalPosition.y, animalPosition.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 255, 0, 0, 100, false, true, 2, nil, nil, false)
-                    end
-                else
-                    print("Modèle d'animal inconnu:", model)
+            if animalName then
+                if IsEntityDead(entity) then
+                    local animalPosition = GetEntityCoords(entity)
+                    table.insert(animalPositions, animalPosition)
+                    print("Animal tué à la position : " .. animalPosition.x .. ", " .. animalPosition.y .. ", " .. animalPosition.z)
                 end
-            else
-                print("L'entité n'est pas un ped:", entity)
             end
+        end
+    end
+end)
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(1)
+        for i, animalPosition in ipairs(animalPositions) do
+            DrawMarker(1, animalPosition.x, animalPosition.y, animalPosition.z - 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 255, 0, 0, 100, false, true, 2, nil, nil, false)
+        end
+    end
+end)
+
+local cooldown = 0
+
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+        local playerPed = PlayerPedId()
+        local playerCoords = GetEntityCoords(playerPed)
+
+        for i, animalPosition in ipairs(animalPositions) do
+            local distance = #(vector3(animalPosition.x, animalPosition.y, animalPosition.z) - playerCoords)
+
+            if distance <= 2.0 then
+                if IsControlJustPressed(1, 38) and cooldown == 0 then
+                    cooldown = 1000
+                    print("Touche E enfoncée")
+                    RequestAnimDict("amb@medic@standing@kneel@base")
+                    while not HasAnimDictLoaded("amb@medic@standing@kneel@base") do
+                        Citizen.Wait(0)
+                    end
+                    TaskPlayAnim(playerPed, "amb@medic@standing@kneel@base", "base", 8.0, -8.0, -1, 0, 0, false, false, false)
+                    TriggerEvent("chat:addMessage", {
+                        color = { 255, 0, 0},
+                        multiline = true,
+                        args = {"Débug", "Animation lancée"}
+                    })
+                end
+            end
+        end
+
+        if cooldown > 0 then
+            cooldown = cooldown - 1
+            Citizen.Wait(1)
         end
     end
 end)
