@@ -119,6 +119,28 @@ function IsEntityMarked(entity)
     return false
 end
 
+Citizen.CreateThread(function()
+    while true do
+        Citizen.Wait(0)
+        if IsControlJustPressed(0, 38) then
+            local playerPed = PlayerPedId()
+            local playerPosition = GetEntityCoords(playerPed)
+            for i, animalPosition in ipairs(animalPositions) do
+                if #(playerPosition - animalPosition) < 1.0 then
+                    RequestAnimDict("amb@world_human_bum_wash@male@high@idle_a")
+                    while not HasAnimDictLoaded("amb@world_human_bum_wash@male@high@idle_a") do
+                        Citizen.Wait(1)
+                    end
+                    TaskPlayAnim(playerPed, "amb@world_human_bum_wash@male@high@idle_a", "idle_a", 8.0, 8.0, -1, 50, 0, false, false, false)
+                    Citizen.Wait(5000)
+                    ClearPedTasksImmediately(playerPed)
+                    break
+                end
+            end
+        end
+    end
+end)
+
 function RemoveAnimalMarker(index)
     table.remove(animalPositions, index)
 end
