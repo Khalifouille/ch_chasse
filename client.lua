@@ -94,7 +94,7 @@ Citizen.CreateThread(function()
                     local animalPosition = GetEntityCoords(entity)
                     table.insert(animalPositions, animalPosition)
                     table.insert(markedEntities, entity)
-                    print("Animal tué à la position : " .. animalPosition.x .. ", " .. animalPosition.y .. ", " .. animalPosition.z)
+                    -- print("Animal tué à la position : " .. animalPosition.x .. ", " .. animalPosition.y .. ", " .. animalPosition.z)
                 end
             end
         end
