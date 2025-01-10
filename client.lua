@@ -137,6 +137,9 @@ Citizen.CreateThread(function()
                     TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_MEDIC_TEND_TO_DEAD", 0, true)
                     Citizen.Wait(2000)
                     ClearPedTasksImmediately(playerPed)
+                    RemoveAnimalMarker(i)
+                    DeleteEntity(markedEntities[i])
+                    table.remove(markedEntities, i)
                     break
                 end
             end
