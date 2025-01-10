@@ -15,3 +15,9 @@ RegisterServerEvent('esx_hunting:animalDied')
 AddEventHandler('esx_hunting:animalDied', function(animalNetId, animalName, animalPosition)
     print("Animal mort détecté, NetID:", animalNetId, "Nom:", animalName, "Position:", animalPosition)
 end)
+
+RegisterNetEvent('ch_youness:donviande')
+AddEventHandler('ch_youness:donviande', function()
+    local source = source
+    exports.ox_inventory:AddItem(source, 'viande_fraiche', 1)
+end)

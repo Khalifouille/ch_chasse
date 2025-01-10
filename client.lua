@@ -6,6 +6,13 @@ local x, y, z = 966.145081, -2128.694580, 31.453491
 local chasseur = false
 local cooldown = 0
 
+local playerPed = PlayerPedId()
+local currentWeapon = GetSelectedPedWeapon(playerPed)
+
+if currentWeapon ~= nil then
+    print("Le joueur a tiré avec l'arme : " .. currentWeapon)
+end
+
 Citizen.CreateThread(function()
     RequestModel(GetHashKey(pedModel))
     while not HasModelLoaded(GetHashKey(pedModel)) do
@@ -156,6 +163,7 @@ Citizen.CreateThread(function()
 
             if distance <= 1.0 then
                 if IsControlJustPressed(1, 38) then
+                    TriggerServerEvent('ch_youness:donviande')
                     local closestMarkerIndex = nil
                     local closestDistance = 1000.0
                     for j, markerPosition in ipairs(animalPositions) do
