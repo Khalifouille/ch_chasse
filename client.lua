@@ -135,7 +135,7 @@ Citizen.CreateThread(function()
             for i, animalPosition in ipairs(animalPositions) do
                 if #(playerPosition - animalPosition) < 1.0 then
                     TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_MEDIC_TEND_TO_DEAD", 0, true)
-                    Citizen.Wait(500)
+                    Citizen.Wait(2000)
                     ClearPedTasksImmediately(playerPed)
                     break
                 end
