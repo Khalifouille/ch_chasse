@@ -21,3 +21,9 @@ AddEventHandler('ch_youness:donviande', function()
     local source = source
     exports.ox_inventory:AddItem(source, 'viande_fraiche', 1)
 end)
+
+RegisterNetEvent('ch_youness:donviande_pourrie')
+AddEventHandler('ch_youness:donviande_pourrie', function()
+    local source = source
+    exports.ox_inventory:AddItem(source, 'viande_pourrie', 1)
+end)

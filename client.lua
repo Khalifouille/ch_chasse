@@ -134,12 +134,8 @@ Citizen.CreateThread(function()
             local playerPosition = GetEntityCoords(playerPed)
             for i, animalPosition in ipairs(animalPositions) do
                 if #(playerPosition - animalPosition) < 1.0 then
-                    RequestAnimDict("amb@world_human_bum_wash@male@high@idle_a")
-                    while not HasAnimDictLoaded("amb@world_human_bum_wash@male@high@idle_a") do
-                        Citizen.Wait(1)
-                    end
-                    TaskPlayAnim(playerPed, "amb@world_human_bum_wash@male@high@idle_a", "idle_a", 8.0, 8.0, -1, 50, 0, false, false, false)
-                    Citizen.Wait(5000)
+                    TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_MEDIC_TEND_TO_DEAD", 0, true)
+                    Citizen.Wait(500)
                     ClearPedTasksImmediately(playerPed)
                     break
                 end
@@ -163,7 +159,6 @@ Citizen.CreateThread(function()
 
             if distance <= 1.0 then
                 if IsControlJustPressed(1, 38) then
-                    TriggerServerEvent('ch_youness:donviande')
                     local closestMarkerIndex = nil
                     local closestDistance = 1000.0
                     for j, markerPosition in ipairs(animalPositions) do
@@ -176,6 +171,7 @@ Citizen.CreateThread(function()
 
                     if closestMarkerIndex ~= nil then
                         RemoveAnimalMarker(closestMarkerIndex)
+                        TriggerServerEvent('ch_youness:donviande')
                     end
                 end
             end
