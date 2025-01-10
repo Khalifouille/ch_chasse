@@ -134,9 +134,19 @@ Citizen.CreateThread(function()
             local playerPosition = GetEntityCoords(playerPed)
             for i, animalPosition in ipairs(animalPositions) do
                 if #(playerPosition - animalPosition) < 1.0 then
-                    TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_MEDIC_TEND_TO_DEAD", 0, true)
-                    Citizen.Wait(2000)
-                    ClearPedTasksImmediately(playerPed)
+                    local currentWeapon = GetSelectedPedWeapon(playerPed)
+                    print("Arme utilisée : " .. currentWeapon)
+                    if GetSelectedPedWeapon(playerPed) == -1466123874 then
+                        TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_MEDIC_TEND_TO_DEAD", 0, true)
+                        Citizen.Wait(2000)
+                        ClearPedTasksImmediately(playerPed)
+                        TriggerServerEvent('ch_youness:donviande')
+                    else
+                        TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_MEDIC_TEND_TO_DEAD", 0, true)
+                        Citizen.Wait(2000)
+                        ClearPedTasksImmediately(playerPed)
+                        TriggerServerEvent('ch_youness:donviande_pourrie')
+                    end
                     RemoveAnimalMarker(i)
                     DeleteEntity(markedEntities[i])
                     table.remove(markedEntities, i)
@@ -174,7 +184,6 @@ Citizen.CreateThread(function()
 
                     if closestMarkerIndex ~= nil then
                         RemoveAnimalMarker(closestMarkerIndex)
-                        TriggerServerEvent('ch_youness:donviande')
                     end
                 end
             end
