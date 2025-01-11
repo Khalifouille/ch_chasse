@@ -135,7 +135,7 @@ Citizen.CreateThread(function()
             for i, animalPosition in ipairs(animalPositions) do
                 if #(playerPosition - animalPosition) < 1.0 then
                     local currentWeapon = GetSelectedPedWeapon(playerPed)
-                    print("Arme utilisée : " .. currentWeapon)
+                    -- print("Arme utilisée : " .. currentWeapon)
                     if GetSelectedPedWeapon(playerPed) == -1466123874 then
                         TaskStartScenarioInPlace(playerPed, "CODE_HUMAN_MEDIC_TEND_TO_DEAD", 0, true)
                         Citizen.Wait(2000)
