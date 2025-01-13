@@ -29,6 +29,18 @@ Citizen.CreateThread(function()
         NetworkRegisterEntityAsNetworked(ped)
     end
 
+    SetEntityAsMissionEntity(ped, true, true)
+    SetPedFleeAttributes(ped, 0, 0)
+    SetPedCombatAttributes(ped, 46, 1)
+    SetPedArmour(ped, 100)
+    SetPedMaxHealth(ped, 200)
+    SetPedRelationshipGroupHash(ped, GetHashKey("CIVMALE"))
+    SetBlockingOfNonTemporaryEvents(ped, true)
+    SetPedCanRagdoll(ped, false)
+    SetModelAsNoLongerNeeded(GetHashKey(pedModel))
+    SetEntityInvincible(ped, true)
+    TaskStartScenarioInPlace(ped, "WORLD_HUMAN_STAND_IMPATIENT", 0, true)
+
     Citizen.CreateThread(function()
         while true do
             Citizen.Wait(0)
